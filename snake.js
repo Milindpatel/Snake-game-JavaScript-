@@ -80,8 +80,8 @@ function createFruit(){
                 found = true;
     }
     set(fruitX, fruitY, "fruit");
-    fx = fruitX;
-    fy = fruitY;
+    fX = fruitX;
+    fY = fruitY;
 }
 
 window.addEventListener("keypress", function key(){
@@ -130,6 +130,10 @@ function update(){
         snakeX++;
     
     set(snakeX,snakeY,"snake");
+    if(snakeX == fX && snakeY == fY){
+        createFruit();
+        length+=increment;
+    }
 }
 
 function updateTail(){
