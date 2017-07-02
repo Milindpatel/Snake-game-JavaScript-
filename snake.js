@@ -7,12 +7,13 @@ var interval = 100;
 var increment = 1;
 
 //game variables
+var length = 0;
 var tailX = [snakeX];
 var tailY = [snakeY];
 var fX;
 var fY;
-var running;
-var gameOver;
+var running = false;
+var gameOver = false;
 var direction = -1; // up = 0, down = -1. left = 1,right = 2
 var int;
 
@@ -81,5 +82,62 @@ function createFruit(){
     set(fruitX, fruitY, "fruit");
     fx = fruitX;
     fy = fruitY;
+}
+
+window.addEventListener("keypress", function key(){
+    // if key is w  set direction up
+    var key = event.keyCode;
+    if(direction != -1 && (key == 119 || key == 87))
+        direction = 0;
+
+    // if key is s set direction down
+    else if(direction != 0 && (key == 115 || key == 83))
+        direction = -1
+
+    // if direction is A set Direction left
+    else if(direction != 2 && (key == 97 || key == 65))
+        direction = 1;
+    // if direction is D set direction right
+    else if(direction != 1 && (key == 100 || key == 68))
+        direction = 2;
+    
+    if(!running)
+        running = true;
+    else if (key == 32)
+        running = false;
+});
+
+function gameLoop(){
+    if (running && !gameOver){
+        update();
+    }
+    else if(gameOver){
+        clearInterval(int);
+    }
+}
+
+function update(){
+    set(fX,fY,"fruit");
+    updateTail();
+    set(tailX[length],tailY[length],"blank");
+    if(direction == 0)
+        snakeY--;
+    else if(direction == -1)
+        snakeY++;
+    else if(direction == 1)
+        snakeX--;
+    else if(direction == 2)
+        snakeX++;
+    
+    set(snakeX,snakeY,"snake");
+}
+
+function updateTail(){
+    for (var i = length; i > 0;i--){
+        tailX[i] = tailX[i-1];
+        tailY[i] = tailY[i-1];
+    }
+    tailX[0] = snakeX;
+    tailY[0] = snakeY;
 }
 run();
