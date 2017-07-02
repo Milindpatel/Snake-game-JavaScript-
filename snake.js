@@ -16,6 +16,7 @@ var running = false;
 var gameOver = false;
 var direction = -1; // up = 0, down = -1. left = 1,right = 2
 var int;
+var score = 0;
 
 /*
 entrypoint of game
@@ -130,10 +131,28 @@ function update(){
         snakeX++;
     
     set(snakeX,snakeY,"snake");
-    if(snakeX == fX && snakeY == fY){
+    //if snake collide
+    for (var i = tailX.length-1; i>=0; i--){
+        if(snakeX == tailX[i] && snakeY == tailY[i]){
+            gameOver = true;
+            window.location.reload(true);
+            break;
+        }
+    }
+
+    //if snake hit the wall
+    if(snakeX == 0 || snakeX == width-1 || snakeY == 0 || snakeY == height-1){
+        gameOver = true;
+        window.location.reload(true);
+    }
+    else if(snakeX == fX && snakeY == fY){
+       
         createFruit();
         length+=increment;
+         score+=1;
+        
     }
+    document.getElementById("score").innerHTML = "Score: " + score;
 }
 
 function updateTail(){
